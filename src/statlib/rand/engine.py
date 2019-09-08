@@ -1,9 +1,6 @@
+from statlib.rand.constants import ULM, ULLM
 from datetime import datetime
 
-LM = 2147483647
-ULM = 4294967295
-LLM = 9223372036854775807
-ULLM = 18446744073709551615
 
 class RandEngine:
     dummy = 123456789
@@ -41,12 +38,12 @@ class RandEngine:
 
     def getRandomSeed() -> int:
         RandEngine.dummy = (RandEngine.dummy + 1) % ULM
-        # / 1000?
+
         return RandEngine.mix(datetime.now().microsecond % ULM, 5, RandEngine.dummy)
 
     def MinValue(self) -> int:
         pass
-    
+
     def MaxValue(self) -> int:
         pass
 
@@ -70,13 +67,13 @@ class JKissRandEngine(RandEngine):
 
     def MaxValue(self) -> int:
         return 4294967295
-    
+
     def Reseed(self, seed: int):
         self.x = 123456789 ^ seed
         self.c = 6543217
         self.y = 987654321
         self.z = 43219876
-    
+
     def Next(self):
         t = ((698769069 * self.z) % ULLM + self.c) % ULLM
 
@@ -103,7 +100,7 @@ class JLKiss64RandEngine(RandEngine):
         self.c2 = 0
         self.Reseed(JLKiss64RandEngine.getRandomSeed())
 
-    def MinValue(self) -> int: 
+    def MinValue(self) -> int:
         return 0
 
     def MaxValue(self) -> int:
@@ -158,30 +155,3 @@ class PCGRandEngine(RandEngine):
         rot = oldstate >> 59
 
         return (xorshifted >> rot) | (xorshifted << ((-rot) & 31))
-
-
-class BasicRandGenerator:
-    def __init__(self):
-        self.engine = None
-
-    def getDecimals(value: int):
-        num = 0
-        maxRand = value
-
-        while maxRand:
-            num += 1
-            maxRand >>= 1
-
-        return num
-
-    def Variate(self):
-        return engine.Next()
-        
-    def maxDecimals(self):
-        return getDecimals(engine.MaxValue())
-
-    def MaxValue(self):
-        return engine.MaxValue()
-
-    def Reseed(self, seed: int):
-        engine.Reseed(seed)
