@@ -1,9 +1,6 @@
 import random
 from statlib.rand.engine import RandEngine
 
-RAND_MIN = 0
-RAND_MAX = 0xffffffffffffffff
-
 
 class BasicRand:
     def __init__(self, engine: RandEngine):
@@ -21,11 +18,11 @@ class BasicRand:
 
     def next(self):
         return self.engine.Next()
-        
-    def maxDecimals(self):
+
+    def max_decimals(self):
         return getDecimals(self.engine.MaxValue())
 
-    def maxValue(self):
+    def max_val(self):
         return self.engine.MaxValue()
 
     def reseed(self, seed: int):

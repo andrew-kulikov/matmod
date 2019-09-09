@@ -1,9 +1,9 @@
 import math
 
-import basic_rand
+from statlib.rand import basic_rand
 
-from ziggurat import Exponential, Uniform, Normal
-from gammas import GA_2, GA_1, GS
+from statlib.ziggurat import Exponential, Uniform, Normal
+from statlib.gammas import GA_2, GA_1, GS
 
 EXPONENTIAL_THETA = 10.0
 
@@ -82,8 +82,8 @@ class Weibull: # needed 6
 
 
 class Pareto: # needed 4
-    def __init__(self):
-        self.uniform = Uniform()
+    def __init__(self, generator):
+        self.uniform = Uniform(generator)
 
     def next(self, xm: float, alpha: float):
         return xm / math.pow(self.uniform.next(0, 1), 1.0 / alpha)

@@ -1,18 +1,19 @@
 import math
 import random
-import basic_rand
+from statlib.rand.basic_rand import BasicRand
+from statlib.rand.engine import JLKiss64RandEngine
 import ctypes
 
 
-class NormalZiggurat: #???
+class NormalZiggurat:
     def __init__(self, x1=3.6541528853610088, A=4.92867323399e-3):
         self.stair_height = [0.0] * 256
         self.stair_width = [0.0] * 257
         self.x1 = x1
         self.A = A
-        self.br = basic_rand.BasicRand()
-        self.uniform = Uniform()
-        self.exponential = Exponential()
+        self.br = BasicRand(JLKiss64RandEngine())
+        self.uniform = Uniform(self.br)
+        self.exponential = Exponential(self.br)
 
         self.setup_normal_tables()
 
@@ -21,8 +22,10 @@ class NormalZiggurat: #???
         self.stair_width[0] = self.A / self.stair_height[0]
         self.stair_width[256] = 0
         for i in range(1, 256):
-            self.stair_width[i] = math.sqrt(-2 * math.log(self.stair_height[i - 1]))
-            self.stair_height[i] = self.stair_height[i - 1] + self.A / self.stair_width[i]
+            self.stair_width[i] = math.sqrt(-2 *
+                                            math.log(self.stair_height[i - 1]))
+            self.stair_height[i] = self.stair_height[i - 1] + \
+                self.A / self.stair_width[i]
 
     def next(self):
         iteration = 0
@@ -42,7 +45,7 @@ class NormalZiggurat: #???
                     while True:
                         x = self.exponential.next(self.x1)
                         y = self.exponential.next(1)
-                        z = y - 0.6 * x **2
+                        z = y - 0.6 * x ** 2
                         if z > 0:
                             break
                 x += self.x1
@@ -56,12 +59,14 @@ class NormalZiggurat: #???
                 return float('nan')
 
 
-class Exponential: # needed 2
-    def __init__(self, seed=1):
-        self.rand = LCG()#random.Random(seed)
+class Exponential:  # needed 2
+    def __init__(self, generator: BasicRand):
+        self.rand = generator
 
     def next(self, theta: float):
         return -theta * math.log(1 - self.rand.next())
+
+
 
 # https://en.wikipedia.org/wiki/Linear_congruential_generator common values list are in the table
 class LCG:
@@ -77,15 +82,15 @@ class LCG:
 
 
 class Uniform:
-    def __init__(self):
-        self.rand = LCG()#basic_rand.BasicRand()
+    def __init__(self, generator: BasicRand):
+        self.rand = generator
 
     def next(self, min: float, max: float):
         rand = self.rand.next()
-        return min + rand * (max - min) / basic_rand.RAND_MAX
+        return min + rand * (max - min) / self.rand.max_val()
 
 
-class Normal: # needed 1
+class Normal: 
     def __init__(self):
         self.ziggurat = NormalZiggurat()
 

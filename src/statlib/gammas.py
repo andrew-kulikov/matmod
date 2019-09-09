@@ -1,6 +1,6 @@
 import math
 
-from ziggurat import Exponential, Uniform, Normal
+from statlib.ziggurat import Exponential, Uniform, Normal
 
 
 class GA_1():
