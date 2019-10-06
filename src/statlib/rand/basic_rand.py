@@ -1,29 +1,15 @@
 import random
-from statlib.rand.engine import RandEngine
 
 
 class BasicRand:
-    def __init__(self, engine: RandEngine):
-        self.engine = engine
-
-    def getDecimals(value: int):
-        num = 0
-        maxRand = value
-
-        while maxRand:
-            num += 1
-            maxRand >>= 1
-
-        return num
+    def __init__(self, gen):
+        self.gen = gen
 
     def next(self):
-        return self.engine.Next()
-
-    def max_decimals(self):
-        return getDecimals(self.engine.MaxValue())
+        return self.gen.next() / self.max_val()
 
     def max_val(self):
-        return self.engine.MaxValue()
+        return self.engine.max_val()
 
-    def reseed(self, seed: int):
-        self.engine.Reseed(seed)
+    def reseed(self, seed):
+        self.engine.reseed(seed)

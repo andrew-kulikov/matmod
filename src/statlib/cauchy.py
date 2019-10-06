@@ -1,6 +1,14 @@
 import math
 
-from statlib.rand import basic_rand
+from statlib.rand.basic_rand import BasicRand
+
+class Uniform:
+    def __init__(self, gen):
+        self.gen = BasicRand(gen)
+    
+    def next(self, a=0, b=1):
+        return self.gen.next() * (b - a) + a
+                
 
 # TODO: try to generate normal
 class Cauchy:
