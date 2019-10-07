@@ -25,3 +25,10 @@ class Cauchy:
 
         return x0 + gamma * x / y
 
+
+class Pareto:
+    def __init__(self, gen):
+        self.gen = BasicRand(gen)
+
+    def next(self, xm, alpha):
+        return xm / math.pow(self.gen.next(), 1.0 / alpha)

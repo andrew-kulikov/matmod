@@ -9,7 +9,7 @@ class BasicRand:
         return self.gen.next() / self.max_val()
 
     def max_val(self):
-        return self.engine.max_val()
+        return self.gen.max_val()
 
     def reseed(self, seed):
-        self.engine.reseed(seed)
+        self.gen.reseed(seed)
