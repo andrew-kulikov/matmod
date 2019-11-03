@@ -48,7 +48,7 @@ def generate_borders(x_var, segments):
     for i in range(n // segments - 1, n - 1, n // segments):
         res.append((x_var[i] + x_var[i + 1]) / 2)
     res.append(x_var[-1])
-    return res
+    return np.array(res)
 
 
 def pearson_chi(bins, vals, F, n):
