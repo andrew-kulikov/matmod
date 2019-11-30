@@ -67,8 +67,8 @@ def pearson_chi(bins, vals, F, n):
 
 
 def get_dispersion_borders(s, alpha, n):
-    l = s * (n - 1) / chi2.ppf(1 - alpha / 2, n - 1)
-    r = s * (n - 1) / chi2.ppf(alpha / 2, n - 1)
+    l = s * (n - 1) / scipy.stats.norm.ppf(1 - alpha / 2, n - 1)
+    r = s * (n - 1) / scipy.stats.norm.ppf(alpha / 2, n - 1)
     return l, r
 
 
